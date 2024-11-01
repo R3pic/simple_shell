@@ -18,7 +18,6 @@ char *PATH[2] = {NULL};
 
 int main(int argc, char *argv[]) {
     char envpath[] = "./.myshell";
-    // printf("envpath : %s\n", envpath);
     
     readEnv(envpath, PATH);
 
@@ -107,12 +106,12 @@ void readEnv(char *envpath, char *PATH[]) {
 void readUserInput(char *buf) {
     memset(buf, 0, sizeof(buf));
     write(STDOUT_FILENO, "% ", 3);
-    int _read_len = read(STDIN_FILENO, buf, 255);
+    int _read_len = read(STDIN_FILENO, buf, BUF_SIZE - 1);
     buf[_read_len - 1] = '\0'; // 개행문자를 널문자로 변경 (\n -> \0)
 }
 
 int findProgram(char *commandName, char *commandPath) {
-    char buf[256];
+    char buf[BUF_SIZE];
     for (int i = 0 ; PATH[i] != NULL ; i++) {
         int len = strlen(commandName) + strlen(PATH[i]) + 2;
         snprintf(buf, len, "%s/%s", PATH[i], commandName);
